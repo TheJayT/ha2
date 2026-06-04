@@ -413,7 +413,7 @@
 
       <div class="card card-pad weather-card">
         <div>
-          <div class="subtitle">KUGN Weather</div>
+          <div class="subtitle">Weather</div>
           <div class="weather-temp"><span id="weatherTemp">--</span>°</div>
         </div>
         <div class="weather-meta">
@@ -853,12 +853,16 @@
       if (byId[ENTITIES.masterBathAll]) setBadge("badgeBathAll", byId[ENTITIES.masterBathAll].state);
       if (byId[ENTITIES.drivewayCamera]) setBadge("badgeDriveway", byId[ENTITIES.drivewayCamera].state);
       if (byId[ENTITIES.charlesOfficeTemp]) setText("badgeCharlesTemp", Math.round(Number(byId[ENTITIES.charlesOfficeTemp].state)));
+const weather = byId[ENTITIES.weather];
+if (weather) {
+  setText("weatherState", prettyState(weather.state));
 
-      const weather = byId[ENTITIES.weather];
-      if (weather) {
-        setText("weatherState", prettyState(weather.state));
-        setText("weatherTemp", Math.round(Number(weather.attributes.temperature)));
-        setText("weatherWind", weather.attributes.wind_speed ?? "--");
+  const temp = Number(weather.attributes.temperature);
+  setText("weatherTemp", Number.isFinite(temp) ? Math.round(temp) : "--");
+
+  setText("weatherWind", weather.attributes.wind_speed ?? "--");
+  setText("weatherForecast", "Forecast unavailable");
+}
 
         const forecast = weather.attributes.forecast;
         if (Array.isArray(forecast) && forecast.length) {
