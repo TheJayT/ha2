@@ -1,0 +1,916 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Lindsey Master Bath</title>
+
+  <style>
+    :root {
+      --bg-a: #05070d;
+      --bg-b: #0b1220;
+      --glass: rgba(255,255,255,.105);
+      --glass-strong: rgba(255,255,255,.165);
+      --line: rgba(255,255,255,.16);
+      --text: #f8fbff;
+      --muted: rgba(248,251,255,.66);
+      --blue: #60a5fa;
+      --pink: #f472b6;
+      --orange: #fb923c;
+      --purple: #a78bfa;
+      --green: #4ade80;
+      --amber: #fbbf24;
+      --red: #fb7185;
+      --radius: 28px;
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(circle at 12% 8%, rgba(244,114,182,.32), transparent 32%),
+        radial-gradient(circle at 87% 15%, rgba(96,165,250,.36), transparent 34%),
+        radial-gradient(circle at 70% 88%, rgba(167,139,250,.28), transparent 35%),
+        linear-gradient(145deg, var(--bg-a), var(--bg-b));
+      overflow-x: hidden;
+    }
+
+    body.kiosk-dim::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: #000;
+      z-index: 9999;
+    }
+
+    .app {
+      min-height: 100vh;
+      padding: 20px;
+      display: grid;
+      gap: 18px;
+      grid-template-rows: auto auto 1fr;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .title-block {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .title-icon {
+      width: 54px;
+      height: 54px;
+      display: grid;
+      place-items: center;
+      border-radius: 20px;
+      background: linear-gradient(145deg, rgba(96,165,250,.28), rgba(255,255,255,.10));
+      border: 1px solid var(--line);
+      font-size: 28px;
+      box-shadow: 0 18px 60px rgba(0,0,0,.28);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(25px, 3vw, 38px);
+      letter-spacing: -.045em;
+      line-height: 1;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-weight: 650;
+      margin-top: 6px;
+      font-size: 14px;
+    }
+
+    .badge-row {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+
+    .badge-row::-webkit-scrollbar { display: none; }
+
+    .badge {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.10);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      border-radius: 999px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 750;
+      min-height: 44px;
+      cursor: pointer;
+    }
+
+    .badge .state {
+      color: var(--muted);
+      font-weight: 650;
+    }
+
+    .badge.on {
+      background: rgba(96,165,250,.22);
+      border-color: rgba(96,165,250,.45);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 18px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      background: linear-gradient(155deg, var(--glass-strong), var(--glass));
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border-radius: var(--radius);
+      box-shadow: 0 24px 80px rgba(0,0,0,.34);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .card-pad { padding: 20px; }
+
+    .clock-card {
+      min-height: 168px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    #clock {
+      font-size: clamp(58px, 9vw, 100px);
+      font-weight: 850;
+      letter-spacing: -.07em;
+      line-height: .9;
+    }
+
+    #date {
+      color: var(--muted);
+      font-size: 20px;
+      font-weight: 700;
+      margin-top: 8px;
+    }
+
+    .weather-card {
+      min-height: 168px;
+      display: grid;
+      grid-template-columns: .7fr 1fr;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .weather-temp {
+      font-size: clamp(58px, 8vw, 90px);
+      font-weight: 850;
+      letter-spacing: -.07em;
+    }
+
+    .weather-meta {
+      color: var(--muted);
+      font-size: 17px;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    .main {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .section {
+      display: grid;
+      gap: 14px;
+    }
+
+    .section-title {
+      color: var(--muted);
+      font-size: 15px;
+      font-weight: 850;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: 2px 4px;
+    }
+
+    .tile-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .tile {
+      min-height: 112px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+      user-select: none;
+      transition: transform .14s ease, border-color .14s ease, background .14s ease;
+    }
+
+    .tile:active { transform: scale(.975); }
+
+    .tile.compact { min-height: 88px; }
+    .tile.wide { grid-column: 1 / -1; }
+    .tile.tall { min-height: 176px; }
+
+    .tile.on {
+      background: linear-gradient(155deg, rgba(96,165,250,.30), rgba(255,255,255,.11));
+      border-color: rgba(96,165,250,.55);
+    }
+
+    .tile.heat {
+      background: linear-gradient(155deg, rgba(251,191,36,.28), rgba(255,255,255,.11));
+      border-color: rgba(251,191,36,.54);
+    }
+
+    .tile.warn {
+      background: linear-gradient(155deg, rgba(251,113,133,.23), rgba(255,255,255,.11));
+      border-color: rgba(251,113,133,.48);
+    }
+
+    .tile-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 17px;
+      display: grid;
+      place-items: center;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.14);
+      font-size: 25px;
+    }
+
+    .tile-name {
+      font-size: 20px;
+      font-weight: 850;
+      letter-spacing: -.03em;
+    }
+
+    .tile-state {
+      color: var(--muted);
+      font-weight: 700;
+      margin-top: 6px;
+      font-size: 15px;
+    }
+
+    .scene-pink { background: linear-gradient(155deg, rgba(244,114,182,.27), rgba(255,255,255,.10)); }
+    .scene-orange { background: linear-gradient(155deg, rgba(251,146,60,.27), rgba(255,255,255,.10)); }
+    .scene-purple { background: linear-gradient(155deg, rgba(167,139,250,.30), rgba(255,255,255,.10)); }
+    .scene-blue { background: linear-gradient(155deg, rgba(96,165,250,.27), rgba(255,255,255,.10)); }
+
+    .thermo-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .thermo-big {
+      font-size: 42px;
+      font-weight: 850;
+      letter-spacing: -.06em;
+    }
+
+    .button-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .pill {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.10);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .pill:active { transform: scale(.97); }
+
+    .bed-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .mini-stat {
+      padding: 16px;
+      min-height: 92px;
+    }
+
+    .mini-label {
+      color: var(--muted);
+      font-weight: 750;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+
+    .mini-value {
+      font-size: 24px;
+      font-weight: 850;
+      margin-top: 9px;
+      letter-spacing: -.04em;
+    }
+
+    .browser-controls {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .control-btn {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.10);
+      color: var(--text);
+      border-radius: 18px;
+      min-height: 58px;
+      font-size: 20px;
+      font-weight: 850;
+      cursor: pointer;
+    }
+
+    .control-btn:active { transform: scale(.965); }
+
+    @media (max-width: 950px) {
+      .hero-grid, .main { grid-template-columns: 1fr; }
+      .weather-card { grid-template-columns: 1fr; }
+      .topbar { align-items: flex-start; flex-direction: column; }
+      body { overflow: auto; }
+    }
+
+    @media (max-width: 560px) {
+      .app { padding: 14px; gap: 14px; }
+      .tile-grid, .bed-grid { grid-template-columns: 1fr; }
+      .browser-controls { grid-template-columns: repeat(2, 1fr); }
+      .card-pad, .tile { padding: 16px; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="app">
+    <header class="topbar">
+      <div class="title-block">
+        <div class="title-icon">🚿</div>
+        <div>
+          <h1>Lindsey Master Bath</h1>
+          <div class="subtitle">Master Bath • Kiosk Control Panel</div>
+        </div>
+      </div>
+
+      <div class="badge-row">
+        <button class="badge" onclick="toggleEntity(ENTITIES.masterBathAll)">
+          💡 <span>Bath All</span> <span class="state" id="badgeBathAll">--</span>
+        </button>
+        <button class="badge" onclick="moreInfo(ENTITIES.drivewayCamera)">
+          📷 <span>Driveway</span> <span class="state" id="badgeDriveway">--</span>
+        </button>
+        <button class="badge" onclick="callScript(ENTITIES.turnOffAllMasterBath)">
+          ⏻ <span>All Off</span>
+        </button>
+        <div class="badge">
+          🌡️ <span>Charles Office</span> <span class="state"><span id="badgeCharlesTemp">--</span>°</span>
+        </div>
+      </div>
+    </header>
+
+    <section class="hero-grid">
+      <div class="card card-pad clock-card">
+        <div>
+          <div id="clock">--:--</div>
+          <div id="date">Loading…</div>
+        </div>
+        <div class="subtitle">WallPanel idle dim: 30 seconds</div>
+      </div>
+
+      <div class="card card-pad weather-card">
+        <div>
+          <div class="subtitle">KUGN Weather</div>
+          <div class="weather-temp"><span id="weatherTemp">--</span>°</div>
+        </div>
+        <div class="weather-meta">
+          <div id="weatherState">Weather unavailable</div>
+          <div>Wind: <span id="weatherWind">--</span></div>
+          <div>Hourly forecast: <span id="weatherForecast">--</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="main">
+      <div class="section">
+        <div class="section-title">Comfort + Bedroom</div>
+
+        <div class="tile-grid">
+          <div class="card tile scene-blue" onclick="callScript(ENTITIES.blindsHalf)">
+            <div class="tile-icon">🪟</div>
+            <div>
+              <div class="tile-name">Blinds Half</div>
+              <div class="tile-state" id="stateBlindsHalf">Script</div>
+            </div>
+          </div>
+
+          <div class="card tile scene-orange" onclick="callScript(ENTITIES.fireplaceOn)">
+            <div class="tile-icon">🔥</div>
+            <div>
+              <div class="tile-name">Fireplace ON</div>
+              <div class="tile-state" id="stateFireplaceOn">Script</div>
+            </div>
+          </div>
+
+          <div class="card tile" onclick="callScript(ENTITIES.blindsUp)">
+            <div class="tile-icon">⬆️</div>
+            <div>
+              <div class="tile-name">Blinds Up</div>
+              <div class="tile-state">Open blinds</div>
+            </div>
+          </div>
+
+          <div class="card tile" onclick="callScript(ENTITIES.fireplaceOff)">
+            <div class="tile-icon">🧯</div>
+            <div>
+              <div class="tile-name">Fireplace OFF</div>
+              <div class="tile-state">Turn flame off</div>
+            </div>
+          </div>
+
+          <div class="card tile" onclick="callScript(ENTITIES.blindsDown)">
+            <div class="tile-icon">⬇️</div>
+            <div>
+              <div class="tile-name">Blinds Down</div>
+              <div class="tile-state">Close blinds</div>
+            </div>
+          </div>
+
+          <div class="card tile" onclick="callScript(ENTITIES.blindStop)">
+            <div class="tile-icon">⏹️</div>
+            <div>
+              <div class="tile-name">Blind Stop</div>
+              <div class="tile-state">Stop movement</div>
+            </div>
+          </div>
+
+          <div class="card tile compact" onclick="callScene(ENTITIES.towelsOff)">
+            <div class="tile-icon">♨️</div>
+            <div>
+              <div class="tile-name">Towels Off</div>
+              <div class="tile-state">Scene</div>
+            </div>
+          </div>
+
+          <div class="card tile compact scene-pink" onclick="callScene(ENTITIES.towelsOnTimer)">
+            <div class="tile-icon">♨️</div>
+            <div>
+              <div class="tile-name">Towels On</div>
+              <div class="tile-state">Timer scene</div>
+            </div>
+          </div>
+
+          <div class="card tile wide tall" id="heaterTile">
+            <div class="thermo-row">
+              <div>
+                <div class="tile-icon">🌡️</div>
+                <div style="margin-top:16px">
+                  <div class="tile-name">Heater</div>
+                  <div class="tile-state" id="heaterState">climate.a_heater</div>
+                </div>
+              </div>
+              <div class="thermo-big"><span id="heaterCurrent">--</span>°</div>
+            </div>
+            <div class="button-row">
+              <button class="pill" onclick="setClimateMode(ENTITIES.aHeater,'heat')">Heat</button>
+              <button class="pill" onclick="setClimateMode(ENTITIES.aHeater,'off')">Off</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-title">Bed</div>
+        <div class="bed-grid">
+          <div class="card mini-stat">
+            <div class="mini-label">Charles In Bed</div>
+            <div class="mini-value" id="charlesBed">--</div>
+          </div>
+          <div class="card mini-stat">
+            <div class="mini-label">Jason In Bed</div>
+            <div class="mini-value" id="jasonBed">--</div>
+          </div>
+          <div class="card mini-stat">
+            <div class="mini-label">Charles Pressure</div>
+            <div class="mini-value" id="charlesPressure">--</div>
+          </div>
+          <div class="card mini-stat">
+            <div class="mini-label">Jason Pressure</div>
+            <div class="mini-value" id="jasonPressure">--</div>
+          </div>
+          <div class="card mini-stat">
+            <div class="mini-label">Charles Sleep Number</div>
+            <div class="mini-value" id="charlesSleepNumber">--</div>
+          </div>
+          <div class="card mini-stat">
+            <div class="mini-label">Jason Sleep Number</div>
+            <div class="mini-value" id="jasonSleepNumber">--</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Master Bath Controls</div>
+
+        <div class="tile-grid">
+          <div class="card tile scene-pink" id="lightsTile" onclick="callScript(ENTITIES.toggleMasterBathEnergize)">
+            <div class="tile-icon">💡</div>
+            <div>
+              <div class="tile-name">Lights</div>
+              <div class="tile-state" id="stateMasterBathLights">--</div>
+            </div>
+          </div>
+
+          <div class="card tile" id="mirrorTile" onclick="toggleEntity(ENTITIES.mirror)">
+            <div class="tile-icon">🪞</div>
+            <div>
+              <div class="tile-name">Mirror</div>
+              <div class="tile-state" id="stateMirror">--</div>
+            </div>
+          </div>
+
+          <div class="card tile scene-orange" onclick="callScene(ENTITIES.showering)">
+            <div class="tile-icon">🚿</div>
+            <div>
+              <div class="tile-name">Showering</div>
+              <div class="tile-state">Scene</div>
+            </div>
+          </div>
+
+          <div class="card tile" id="closetTile" onclick="toggleEntity(ENTITIES.masterCloset)">
+            <div class="tile-icon">🚪</div>
+            <div>
+              <div class="tile-name">Closet</div>
+              <div class="tile-state" id="stateCloset">--</div>
+            </div>
+          </div>
+
+          <div class="card tile scene-blue" onclick="callScene(ENTITIES.bathtubScene)">
+            <div class="tile-icon">🛁</div>
+            <div>
+              <div class="tile-name">Bathtub Scene</div>
+              <div class="tile-state">Scene</div>
+            </div>
+          </div>
+
+          <div class="card tile scene-pink" onclick="callScene(ENTITIES.bathTimeR)">
+            <div class="tile-icon">🫧</div>
+            <div>
+              <div class="tile-name">Bath Time R</div>
+              <div class="tile-state">Scene</div>
+            </div>
+          </div>
+
+          <div class="card tile scene-purple" onclick="callScene(ENTITIES.energize)">
+            <div class="tile-icon">⚡</div>
+            <div>
+              <div class="tile-name">Energize</div>
+              <div class="tile-state">Scene</div>
+            </div>
+          </div>
+
+          <div class="card tile scene-blue" onclick="callScene(ENTITIES.promise)">
+            <div class="tile-icon">✨</div>
+            <div>
+              <div class="tile-name">Promise</div>
+              <div class="tile-state">Scene</div>
+            </div>
+          </div>
+
+          <div class="card tile wide scene-purple" onclick="callScene(ENTITIES.stripNitelite)">
+            <div class="tile-icon">🌙</div>
+            <div>
+              <div class="tile-name">Strip Nitelite</div>
+              <div class="tile-state">Night light strip</div>
+            </div>
+          </div>
+
+          <div class="card tile wide tall" id="floorTile">
+            <div class="thermo-row">
+              <div>
+                <div class="tile-icon">♨️</div>
+                <div style="margin-top:16px">
+                  <div class="tile-name">Heated Floor</div>
+                  <div class="tile-state" id="floorState">--</div>
+                </div>
+              </div>
+              <div class="thermo-big"><span id="floorCurrent">--</span>°</div>
+            </div>
+            <div class="tile-state">Target <span id="floorTarget">--</span>°</div>
+            <div class="button-row">
+              <button class="pill" onclick="setClimateMode(ENTITIES.floorThermostat,'heat')">Heat</button>
+              <button class="pill" onclick="setClimateMode(ENTITIES.floorThermostat,'off')">Off</button>
+              <button class="pill" onclick="nudgeTemp(ENTITIES.floorThermostat, 1)">+1°</button>
+              <button class="pill" onclick="nudgeTemp(ENTITIES.floorThermostat, -1)">-1°</button>
+            </div>
+          </div>
+
+          <div class="card tile wide">
+            <div class="tile-icon">🧭</div>
+            <div>
+              <div class="tile-name">Browser Controls</div>
+              <div class="tile-state">Refresh, fullscreen, sidebar, dim</div>
+            </div>
+            <div class="browser-controls" style="margin-top:14px">
+              <button class="control-btn" onclick="location.reload()">↻</button>
+              <button class="control-btn" onclick="toggleFullscreen()">⛶</button>
+              <button class="control-btn" onclick="toggleDim()">◐</button>
+              <button class="control-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    /*
+      SETUP:
+      1. In Home Assistant, create a Long-Lived Access Token:
+         Profile > Security > Long-Lived Access Tokens.
+      2. Paste your HA URL and token below.
+      3. Host this file somewhere the iPad can reach.
+    */
+
+    const HA_URL = "http://homeassistant.local:8123";
+    const HA_TOKEN = "PASTE_LONG_LIVED_ACCESS_TOKEN_HERE";
+
+    const ENTITIES = {
+      masterBathAll: "light.master_bath_all_2",
+      drivewayCamera: "camera.driveway_camera",
+      turnOffAllMasterBath: "script.turn_off_all_master_bath",
+      charlesOfficeTemp: "sensor.charles_office_temperature",
+
+      weather: "weather.kugn",
+
+      blindsHalf: "script.blindshalfwayup",
+      fireplaceOn: "script.fireplaceon",
+      blindsUp: "script.blindsup",
+      fireplaceOff: "script.fireplaceoff",
+      blindsDown: "script.blinds_down",
+      blindStop: "script.blindstop",
+      towelsOff: "scene.towels_turn_off",
+      towelsOnTimer: "scene.towels_on_with_timer",
+      aHeater: "climate.a_heater",
+
+      masterBathLights: "light.master_bath",
+      toggleMasterBathEnergize: "script.toggle_master_bath_entergize",
+      mirror: "switch.mirror",
+      showering: "scene.showering",
+      masterCloset: "light.master_closet",
+      bathtubScene: "scene.master_bath_bathtub",
+      bathTimeR: "scene.bath_time_r",
+      energize: "scene.master_bath_all_energize",
+      promise: "scene.master_bath_all_promise",
+      stripNitelite: "scene.light_strip_nightlight",
+
+      floorThermostat: "climate.mysa_456f88_thermostat",
+
+      charlesInBed: "binary_sensor.sleepnumber_bedroom_charles_is_in_bed",
+      charlesPressure: "sensor.sleepnumber_bedroom_charles_pressure",
+      charlesSleepNumber: "sensor.sleepnumber_bedroom_charles_sleepnumber",
+      jasonInBed: "binary_sensor.sleepnumber_bedroom_jason_is_in_bed",
+      jasonPressure: "sensor.sleepnumber_bedroom_jason_pressure",
+      jasonSleepNumber: "sensor.sleepnumber_bedroom_jason_sleepnumber"
+    };
+
+    let dimTimer;
+
+    function prettyState(value) {
+      if (value === undefined || value === null) return "--";
+      return String(value).replaceAll("_", " ").replace(/\b\w/g, c => c.toUpperCase());
+    }
+
+    function setText(id, value) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = value ?? "--";
+    }
+
+    function updateClock() {
+      const now = new Date();
+      setText("clock", now.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }));
+      setText("date", now.toLocaleDateString([], { weekday: "long", month: "long", day: "numeric" }));
+    }
+
+    async function haFetch(path, options = {}) {
+      const response = await fetch(`${HA_URL}${path}`, {
+        ...options,
+        headers: {
+          "Authorization": `Bearer ${HA_TOKEN}`,
+          "Content-Type": "application/json",
+          ...(options.headers || {})
+        }
+      });
+      if (!response.ok) throw new Error(`Home Assistant API error ${response.status}`);
+      return response.json();
+    }
+
+    async function getState(entityId) {
+      return haFetch(`/api/states/${entityId}`);
+    }
+
+    async function callService(domain, service, data) {
+      try {
+        await haFetch(`/api/services/${domain}/${service}`, {
+          method: "POST",
+          body: JSON.stringify(data)
+        });
+        setTimeout(refreshStates, 650);
+      } catch (error) {
+        console.error(error);
+        alert("Command failed. Check the HA URL, token, or entity ID.");
+      }
+    }
+
+    function domainOf(entityId) {
+      return entityId.split(".")[0];
+    }
+
+    async function toggleEntity(entityId) {
+      await callService(domainOf(entityId), "toggle", { entity_id: entityId });
+    }
+
+    async function callScript(entityId) {
+      await callService("script", "turn_on", { entity_id: entityId });
+    }
+
+    async function callScene(entityId) {
+      await callService("scene", "turn_on", { entity_id: entityId });
+    }
+
+    async function setClimateMode(entityId, mode) {
+      await callService("climate", "set_hvac_mode", { entity_id: entityId, hvac_mode: mode });
+    }
+
+    async function nudgeTemp(entityId, delta) {
+      try {
+        const state = await getState(entityId);
+        const currentTarget = Number(state.attributes.temperature);
+        if (!Number.isFinite(currentTarget)) return;
+        await callService("climate", "set_temperature", {
+          entity_id: entityId,
+          temperature: currentTarget + delta
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    function updateTile(tileId, stateId, state) {
+      const tile = document.getElementById(tileId);
+      if (!tile) return;
+
+      tile.classList.remove("on", "warn", "heat");
+
+      if (stateId) setText(stateId, prettyState(state));
+
+      if (["on", "open", "detected", "heat", "heating"].includes(state)) tile.classList.add("on");
+      if (["unknown", "unavailable"].includes(state)) tile.classList.add("warn");
+    }
+
+    function setBadge(id, state) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.textContent = prettyState(state);
+      const badge = el.closest(".badge");
+      if (badge) badge.classList.toggle("on", state === "on");
+    }
+
+    function updateClimateTile(tileId, stateId, currentId, targetId, stateObj) {
+      const tile = document.getElementById(tileId);
+      const mode = stateObj.state;
+      const action = stateObj.attributes.hvac_action || mode;
+      const current = stateObj.attributes.current_temperature;
+      const target = stateObj.attributes.temperature;
+
+      if (tile) {
+        tile.classList.remove("heat", "warn");
+        if (mode === "heat" || action === "heating") tile.classList.add("heat");
+        if (mode === "unknown" || mode === "unavailable") tile.classList.add("warn");
+      }
+
+      setText(stateId, `${prettyState(action)} • ${prettyState(mode)}`);
+      setText(currentId, Number.isFinite(Number(current)) ? Math.round(Number(current)) : "--");
+      if (targetId) setText(targetId, Number.isFinite(Number(target)) ? Math.round(Number(target)) : "--");
+    }
+
+    async function refreshStates() {
+      const ids = [
+        ENTITIES.masterBathAll,
+        ENTITIES.drivewayCamera,
+        ENTITIES.charlesOfficeTemp,
+        ENTITIES.weather,
+        ENTITIES.masterBathLights,
+        ENTITIES.mirror,
+        ENTITIES.masterCloset,
+        ENTITIES.aHeater,
+        ENTITIES.floorThermostat,
+        ENTITIES.charlesInBed,
+        ENTITIES.charlesPressure,
+        ENTITIES.charlesSleepNumber,
+        ENTITIES.jasonInBed,
+        ENTITIES.jasonPressure,
+        ENTITIES.jasonSleepNumber
+      ];
+
+      const results = await Promise.allSettled(ids.map(getState));
+      const byId = {};
+      results.forEach((result, index) => {
+        if (result.status === "fulfilled") byId[ids[index]] = result.value;
+      });
+
+      if (byId[ENTITIES.masterBathAll]) setBadge("badgeBathAll", byId[ENTITIES.masterBathAll].state);
+      if (byId[ENTITIES.drivewayCamera]) setBadge("badgeDriveway", byId[ENTITIES.drivewayCamera].state);
+      if (byId[ENTITIES.charlesOfficeTemp]) setText("badgeCharlesTemp", Math.round(Number(byId[ENTITIES.charlesOfficeTemp].state)));
+
+      const weather = byId[ENTITIES.weather];
+      if (weather) {
+        setText("weatherState", prettyState(weather.state));
+        setText("weatherTemp", Math.round(Number(weather.attributes.temperature)));
+        setText("weatherWind", weather.attributes.wind_speed ?? "--");
+
+        const forecast = weather.attributes.forecast;
+        if (Array.isArray(forecast) && forecast.length) {
+          setText("weatherForecast", forecast.slice(0, 3).map(f => `${Math.round(f.temperature)}°`).join(" / "));
+        } else {
+          setText("weatherForecast", "not exposed by API");
+        }
+      }
+
+      if (byId[ENTITIES.masterBathLights]) updateTile("lightsTile", "stateMasterBathLights", byId[ENTITIES.masterBathLights].state);
+      if (byId[ENTITIES.mirror]) updateTile("mirrorTile", "stateMirror", byId[ENTITIES.mirror].state);
+      if (byId[ENTITIES.masterCloset]) updateTile("closetTile", "stateCloset", byId[ENTITIES.masterCloset].state);
+
+      if (byId[ENTITIES.aHeater]) updateClimateTile("heaterTile", "heaterState", "heaterCurrent", null, byId[ENTITIES.aHeater]);
+      if (byId[ENTITIES.floorThermostat]) updateClimateTile("floorTile", "floorState", "floorCurrent", "floorTarget", byId[ENTITIES.floorThermostat]);
+
+      if (byId[ENTITIES.charlesInBed]) setText("charlesBed", prettyState(byId[ENTITIES.charlesInBed].state));
+      if (byId[ENTITIES.jasonInBed]) setText("jasonBed", prettyState(byId[ENTITIES.jasonInBed].state));
+      if (byId[ENTITIES.charlesPressure]) setText("charlesPressure", byId[ENTITIES.charlesPressure].state);
+      if (byId[ENTITIES.jasonPressure]) setText("jasonPressure", byId[ENTITIES.jasonPressure].state);
+      if (byId[ENTITIES.charlesSleepNumber]) setText("charlesSleepNumber", byId[ENTITIES.charlesSleepNumber].state);
+      if (byId[ENTITIES.jasonSleepNumber]) setText("jasonSleepNumber", byId[ENTITIES.jasonSleepNumber].state);
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+      else document.exitFullscreen?.();
+    }
+
+    function toggleDim() {
+      document.body.classList.toggle("kiosk-dim");
+    }
+
+    function resetDimTimer() {
+      document.body.classList.remove("kiosk-dim");
+      clearTimeout(dimTimer);
+      dimTimer = setTimeout(() => document.body.classList.add("kiosk-dim"), 30000);
+    }
+
+    function moreInfo(entityId) {
+      alert(`Entity: ${entityId}\n\nThis HTML page cannot open HA more-info directly unless embedded inside a custom HA panel. State is still read from the HA API.`);
+    }
+
+    ["click", "touchstart", "mousemove", "keydown"].forEach(eventName => {
+      window.addEventListener(eventName, resetDimTimer, { passive: true });
+    });
+
+    updateClock();
+    refreshStates();
+    resetDimTimer();
+    setInterval(updateClock, 1000);
+    setInterval(refreshStates, 10000);
+  </script>
+</body>
+</html>
