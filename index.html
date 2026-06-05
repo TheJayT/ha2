@@ -238,7 +238,10 @@
       setTimeout(refreshStates,700);
     }catch(e){
       console.error(e);
-      alert("Command failed. Check HA_URL, HA_TOKEN, CORS, or entity ID.");
+     catch (err) {
+
+  alert("REAL ERROR: " + err.message);
+  console.error(err);;
     }
   }
 
