@@ -232,18 +232,29 @@
 
   async function getState(entity){return haFetch(`/api/states/${entity}`);}
 
-  async function callService(domain,service,data){
-    try{
-      await haFetch(`/api/services/${domain}/${service}`,{method:"POST",body:JSON.stringify(data)});
-      setTimeout(refreshStates,700);
-    }catch(e){
-      console.error(e);
-     catch (err) {
+async function callService(domain, service, data) {
 
-  alert("REAL ERROR: " + err.message);
-  console.error(err);;
-    }
+  try {
+
+    await haFetch(`/api/services/${domain}/${service}`, {
+
+      method: "POST",
+
+      body: JSON.stringify(data)
+
+    });
+
+    setTimeout(refreshStates, 700);
+
+  } catch (err) {
+
+    console.error(err);
+
+    alert("REAL ERROR: " + err.message);
+
   }
+
+}
 
   function domainOf(entity){return entity.split(".")[0];}
   function toggleEntity(entity){return callService(domainOf(entity),"toggle",{entity_id:entity});}
